@@ -41,7 +41,15 @@ def run_inference(inference_request):
     """
     response = automatic_session.post(url=f'{LOCAL_URL}/txt2img',
                                       json=inference_request, timeout=600)
-    return response.json()
+    # return response.json()
+    return response
+
+def send_get_request(endpoint):
+    return session.get(url=f"{LOCAL_URL}/{endpoint}", timeout=TIMEOUT)
+
+
+def send_post_request(endpoint, payload):
+    return session.post(url=f"{LOCAL_URL}/{endpoint}", json=payload, timeout=TIMEOUT)
 
 
 # ---------------------------------------------------------------------------- #
@@ -52,10 +60,23 @@ def handler(event):
     This is the handler function that will be called by the serverless.
     """
 
-    json = run_inference(event["input"])
+    method = event["input"]["method"]
+    endpoint = event["input"]["endpoint"]
+    payload = {}
+    if "payload" in event["input"]:
+        payload = event["input"]["payload"]
 
-    # return the output that you want to be returned like pre-signed URLs to output artifacts
-    return json
+    try:
+        if method == "GET":
+            response = send_get_request(endpoint)
+        elif method == "POST":
+            response = send_post_request(endpoint, payload)
+        else: 
+            response = run_inference(event["input"])
+    except Exception as e:
+        return {"error": str(e)}
+
+    return response.json()
 
 
 if __name__ == "__main__":
