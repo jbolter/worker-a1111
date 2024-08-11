@@ -2,21 +2,12 @@
 # ---------------------------------------------------------------------------- #
 #                         Stage 1: Download the models                         #
 # ---------------------------------------------------------------------------- #
-# Define a build-time argument for the model name
-ARG MODEL_NAME="cyberrealistic_v50"
-
 FROM alpine/git:2.43.0 as download
-
-# Make the ARG available in this stage
-ARG MODEL_NAME
 
 COPY builder/clone.sh /clone.sh
 
 # Define a build-time argument for the CivitAI API token
 ARG CIVITAI_API_TOKEN
-
-# Set the environment variable using the ARG
-ENV MODEL_NAME=${MODEL_NAME}
 
 RUN mkdir -p /models
 RUN mkdir -p /models/Lora && mkdir -p /models/ControlNet
@@ -24,7 +15,7 @@ RUN mkdir -p /models/Lora && mkdir -p /models/ControlNet
 # NOTE: CivitAI usually requires an API token, so you need to add it in the header
 #       of the wget command if you're using a model from CivitAI.
 RUN apk add --no-cache wget && \
-    wget -q -O /${MODEL_NAME}.safetensors "https://civitai.com/api/download/models/537505?type=Model&format=SafeTensor&size=pruned&fp=fp32&token=${CIVITAI_API_TOKEN}" && \
+    wget -q -O /cyberrealistic_v50.safetensors "https://civitai.com/api/download/models/537505?type=Model&format=SafeTensor&size=pruned&fp=fp32&token=${CIVITAI_API_TOKEN}" && \
     wget -q -O /models/Lora/ip-adapter-faceid-plusv2_sd15_lora.safetensors "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid-plusv2_sd15_lora.safetensors" && \
     wget -q -O /models/ControlNet/ip-adapter-faceid-plusv2_sd15.bin "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid-plusv2_sd15.bin" && \
     wget -q -O /models/ControlNet/control_openpose-fp16.safetensors "https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_openpose-fp16.safetensors" && \
@@ -40,9 +31,6 @@ RUN . /clone.sh extensions adetailer https://github.com/Bing-su/adetailer.git 25
 #                        Stage 2: Build the final image                        #
 # ---------------------------------------------------------------------------- #
 FROM python:3.10.14-slim as build_final_image
-
-# Make the ARG available in this stage
-ARG MODEL_NAME
 
 ARG A1111_RELEASE=v1.9.3
 
@@ -77,7 +65,7 @@ COPY --from=download /models/ ${ROOT}/models/
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install -r ${ROOT}/extensions/sd-webui-controlnet/requirements.txt
 
-COPY --from=download /${MODEL_NAME}.safetensors /${MODEL_NAME}.safetensors
+COPY --from=download /cyberrealistic_v50.safetensors /cyberrealistic_v50.safetensors
 
 # Install RunPod SDK
 RUN --mount=type=cache,target=/root/.cache/pip \
@@ -86,8 +74,8 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 ADD src .
 
 COPY builder/cache.py /stable-diffusion-webui/cache.py
-RUN cd /stable-diffusion-webui && python cache.py --use-cpu=all --ckpt /${MODEL_NAME}.safetensors
+RUN cd /stable-diffusion-webui && python cache.py --use-cpu=all --ckpt /cyberrealistic_v50.safetensors
 
 # Set permissions and specify the command to run
 RUN chmod +x /start.sh
-CMD /start.sh ${MODEL_NAME}
+CMD /start.sh cyberrealistic_v50
