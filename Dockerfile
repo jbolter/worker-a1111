@@ -42,7 +42,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN export COMMANDLINE_ARGS="--skip-torch-cuda-test --precision full --no-half"
-RUN export TORCH_COMMAND='pip install ---no-cache-dir torch==2.1.2+cu118 torchvision torchaudio insightface rich --index-url https://download.pytorch.org/whl/cu118'
+RUN export TORCH_COMMAND='pip install ---no-cache-dir torch==2.1.2+cu118 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118'
 
 RUN apt-get update && \
     apt install -y \
@@ -58,7 +58,9 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git && \
     cd stable-diffusion-webui && \
     git reset --hard ${A1111_RELEASE} && \
-    python -c "from launch import prepare_environment; prepare_environment()" --skip-torch-cuda-test
+    python -c "from launch import prepare_environment; prepare_environment()" --skip-torch-cuda-test && \
+    pip install insightface && \
+    pip install rich
 
 COPY --from=download /extensions/ ${ROOT}/extensions/
 COPY --from=download /models/ ${ROOT}/models/
