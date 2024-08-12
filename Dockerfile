@@ -60,10 +60,12 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     git reset --hard ${A1111_RELEASE} && \
     python -c "from launch import prepare_environment; prepare_environment()" --skip-torch-cuda-test && \
     pip install insightface && \
-    pip install rich
+    pip install rich && \
+    pip install onnxruntime
 
 COPY --from=download /extensions/ ${ROOT}/extensions/
 COPY --from=download /models/ ${ROOT}/models/
+
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install -r ${ROOT}/extensions/sd-webui-controlnet/requirements.txt
 
