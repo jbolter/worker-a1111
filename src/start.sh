@@ -21,7 +21,7 @@ python /stable-diffusion-webui/webui.py \
   --nowebui \
   --skip-version-check \
   --no-hashing \
-  --no-download-sd-model > /webui.log 2>&1 &
+  --no-download-sd-model &
 
 echo "Starting RunPod Handler"
 python -u /rp_handler.py
