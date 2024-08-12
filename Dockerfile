@@ -59,7 +59,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     cd stable-diffusion-webui && \
     git reset --hard ${A1111_RELEASE} && \
     python -c "from launch import prepare_environment; prepare_environment()" --skip-torch-cuda-test && \
-    pip install insightface && \
+    pip install insightface==0.7.3 && \
     pip install rich && \
     pip install onnxruntime
 
