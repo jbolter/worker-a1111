@@ -4,6 +4,7 @@ import requests
 from requests.adapters import HTTPAdapter, Retry
 
 LOCAL_URL = "http://127.0.0.1:3000"
+TIMEOUT = 600
 
 automatic_session = requests.Session()
 retries = Retry(total=10, backoff_factor=0.1, status_forcelist=[502, 503, 504])
@@ -40,7 +41,7 @@ def run_inference(inference_request):
     Run inference on a request.
     """
     response = automatic_session.post(url=f'{LOCAL_URL}/sdapi/v1/txt2img',
-                                      json=inference_request, timeout=600)
+                                      json=inference_request, timeout=TIMEOUT)
     # return response.json()
     return response
 
