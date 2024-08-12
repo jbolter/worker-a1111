@@ -25,7 +25,7 @@ RUN apk add --no-cache wget && \
 
 RUN . /clone.sh extensions adetailer https://github.com/Bing-su/adetailer.git 25e7509fe018de8aa063a5f1902598f5eda0c06c && \
     . /clone.sh extensions sd-webui-controlnet https://github.com/Mikubill/sd-webui-controlnet 56cec5b2958edf3b1807b7e7b2b1b5186dbd2f81 && \
-    . /clone.sh extensions sd-webui-additional-network https://github.com/kohya-ss/sd-webui-additional-networks d2758b6c8e2e8e956865a87b31fd74d3d7c010cb
+    . /clone.sh extensions sd-webui-additional-networks https://github.com/kohya-ss/sd-webui-additional-networks e9f3d622b5a98650008a685ea23b27eb810da35a
 
 # ---------------------------------------------------------------------------- #
 #                        Stage 2: Build the final image                        #
