@@ -42,7 +42,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN export COMMANDLINE_ARGS="--skip-torch-cuda-test --precision full --no-half"
-RUN export TORCH_COMMAND='pip install ---no-cache-dir torch==2.1.2+cu118 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118'
+RUN export TORCH_COMMAND='pip install ---no-cache-dir torch==2.1.2+cu118 torchvision torchaudio insightface --index-url https://download.pytorch.org/whl/cu118'
 
 RUN apt-get update && \
     apt install -y \
