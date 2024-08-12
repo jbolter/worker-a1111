@@ -59,15 +59,15 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     cd stable-diffusion-webui && \
     git reset --hard ${A1111_RELEASE} && \
     python -c "from launch import prepare_environment; prepare_environment()" --skip-torch-cuda-test && \
-    pip install insightface==0.7.3 && \
-    pip install rich && \
-    pip install onnxruntime
+    pip install rich
 
 COPY --from=download /extensions/ ${ROOT}/extensions/
 COPY --from=download /models/ ${ROOT}/models/
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install -r ${ROOT}/extensions/sd-webui-controlnet/requirements.txt
+
+RUN cd /stable-diffusion-webui && python ${ROOT}/extensions/sd-webui-controlnet/install.py
 
 COPY --from=download /cyberrealistic_v50.safetensors /cyberrealistic_v50.safetensors
 
