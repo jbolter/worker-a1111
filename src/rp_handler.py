@@ -3,7 +3,7 @@ import runpod
 import requests
 from requests.adapters import HTTPAdapter, Retry
 
-LOCAL_URL = "http://127.0.0.1:3000/sdapi/v1"
+LOCAL_URL = "http://127.0.0.1:3000"
 
 automatic_session = requests.Session()
 retries = Retry(total=10, backoff_factor=0.1, status_forcelist=[502, 503, 504])
@@ -39,17 +39,17 @@ def run_inference(inference_request):
     """
     Run inference on a request.
     """
-    response = automatic_session.post(url=f'{LOCAL_URL}/txt2img',
+    response = automatic_session.post(url=f'{LOCAL_URL}/sdapi/v1/txt2img',
                                       json=inference_request, timeout=600)
     # return response.json()
     return response
 
 def send_get_request(endpoint):
-    return session.get(url=f"{LOCAL_URL}/{endpoint}", timeout=TIMEOUT)
+    return automatic_session.get(url=f"{LOCAL_URL}/{endpoint}", timeout=TIMEOUT)
 
 
 def send_post_request(endpoint, payload):
-    return session.post(url=f"{LOCAL_URL}/{endpoint}", json=payload, timeout=TIMEOUT)
+    return automatic_session.post(url=f"{LOCAL_URL}/{endpoint}", json=payload, timeout=TIMEOUT)
 
 
 # ---------------------------------------------------------------------------- #
@@ -80,6 +80,6 @@ def handler(event):
 
 
 if __name__ == "__main__":
-    wait_for_service(url=f'{LOCAL_URL}/sd-models')
+    wait_for_service(url=f'{LOCAL_URL}/sdapi/v1/sd-models')
     print("WebUI API Service is ready. Starting RunPod Serverless...")
     runpod.serverless.start({"handler": handler})
