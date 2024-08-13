@@ -11,6 +11,7 @@ ARG CIVITAI_API_TOKEN
 
 RUN mkdir -p /models
 RUN mkdir -p /models/Lora && mkdir -p /models/ControlNet
+RUN mkdir -p /extensions/sd-webui-controlnet/annotator/downloads/clip_vision/
 
 # NOTE: CivitAI usually requires an API token, so you need to add it in the header
 #       of the wget command if you're using a model from CivitAI.
@@ -26,6 +27,9 @@ RUN apk add --no-cache wget && \
 RUN . /clone.sh extensions adetailer https://github.com/Bing-su/adetailer.git 25e7509fe018de8aa063a5f1902598f5eda0c06c && \
     . /clone.sh extensions sd-webui-controlnet https://github.com/Mikubill/sd-webui-controlnet 471f564651641d5d364b861a7f5088ca3d4d2b5d && \
     . /clone.sh extensions sd-webui-additional-networks https://github.com/kohya-ss/sd-webui-additional-networks e9f3d622b5a98650008a685ea23b27eb810da35a
+
+RUN apk add --no-cache wget && \
+    wget -q -O /extensions/sd-webui-controlnet/annotator/downloads/clip_vision/clip_h.pth "https://huggingface.co/h94/IP-Adapter/resolve/main/models/image_encoder/pytorch_model.bin"
 
 # ---------------------------------------------------------------------------- #
 #                        Stage 2: Build the final image                        #
