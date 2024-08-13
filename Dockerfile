@@ -24,7 +24,7 @@ RUN apk add --no-cache wget && \
     wget -q -O /models/ControlNet/t2iadapter_openpose-fp16.safetensors "https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/t2iadapter_openpose-fp16.safetensors"
 
 RUN . /clone.sh extensions adetailer https://github.com/Bing-su/adetailer.git 25e7509fe018de8aa063a5f1902598f5eda0c06c && \
-    . /clone.sh extensions sd-webui-controlnet https://github.com/Mikubill/sd-webui-controlnet 56cec5b2958edf3b1807b7e7b2b1b5186dbd2f81 && \
+    . /clone.sh extensions sd-webui-controlnet https://github.com/Mikubill/sd-webui-controlnet 7a4805c8ea3256a0eab3512280bd4f84ca0c8182 && \
     . /clone.sh extensions sd-webui-additional-networks https://github.com/kohya-ss/sd-webui-additional-networks e9f3d622b5a98650008a685ea23b27eb810da35a
 
 # ---------------------------------------------------------------------------- #
@@ -67,7 +67,8 @@ COPY --from=download /extensions/ ${ROOT}/extensions/
 COPY --from=download /models/ ${ROOT}/models/
 
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install -r ${ROOT}/extensions/sd-webui-controlnet/requirements.txt
+    pip install -r ${ROOT}/extensions/sd-webui-controlnet/requirements.txt && \
+    pip install clip-interrogator==0.6.0
 
 COPY --from=download /cyberrealistic_v50.safetensors /cyberrealistic_v50.safetensors
 
