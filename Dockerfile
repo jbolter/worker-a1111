@@ -32,7 +32,7 @@ RUN . /clone.sh extensions adetailer https://github.com/Bing-su/adetailer.git 25
 # ---------------------------------------------------------------------------- #
 FROM python:3.10.14-slim as build_final_image
 
-ARG A1111_RELEASE=v1.9.3
+ARG A1111_RELEASE=v1.9.4
 
 ENV DEBIAN_FRONTEND=noninteractive \
     PIP_PREFER_BINARY=1 \
@@ -59,7 +59,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     cd stable-diffusion-webui && \
     git reset --hard ${A1111_RELEASE} && \
     python -c "from launch import prepare_environment; prepare_environment()" --skip-torch-cuda-test && \
-    pip install insightface && \
+    pip install insightface==0.7.3 && \
     pip install rich && \
     pip install onnxruntime
 
