@@ -46,7 +46,7 @@ RUN export TORCH_COMMAND='pip install ---no-cache-dir torch==2.1.2+cu118 torchvi
 
 RUN apt-get update && \
     apt install -y \
-    fonts-dejavu-core rsync git jq moreutils aria2 wget libgoogle-perftools-dev libtcmalloc-minimal4 procps libgl1 libglib2.0-0 && \
+    fonts-dejavu-core rsync git jq moreutils aria2 wget libgoogle-perftools-dev libtcmalloc-minimal4 procps libgl1 libglib2.0-0 build-essential && \
     apt-get autoremove -y && rm -rf /var/lib/apt/lists/* && apt-get clean -y
 
 RUN --mount=type=cache,target=/cache --mount=type=cache,target=/root/.cache/pip \
