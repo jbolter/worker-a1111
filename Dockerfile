@@ -24,7 +24,7 @@ RUN apk add --no-cache wget && \
     wget -q -O /models/ControlNet/t2iadapter_openpose-fp16.safetensors "https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/t2iadapter_openpose-fp16.safetensors"
 
 RUN . /clone.sh extensions adetailer https://github.com/Bing-su/adetailer.git 25e7509fe018de8aa063a5f1902598f5eda0c06c && \
-    . /clone.sh extensions sd-webui-controlnet https://github.com/Mikubill/sd-webui-controlnet 97c8598c8be6c369d7757d75c0d1c823e034f36e && \
+    . /clone.sh extensions sd-webui-controlnet https://github.com/Mikubill/sd-webui-controlnet 7b4cdea2a44dda6eb042eed5af1439726a4c5e1a && \
     . /clone.sh extensions sd-webui-additional-networks https://github.com/kohya-ss/sd-webui-additional-networks e9f3d622b5a98650008a685ea23b27eb810da35a
 
 # ---------------------------------------------------------------------------- #
